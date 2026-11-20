@@ -4,16 +4,17 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+import ENV from "./src/config/env";
+
 import userRouter from "./src/usuario/router";
+import auditoriaRouter from "./src/auditoria/router";
 
 export class Server{
     private app: express.Application;
-    private port: string;
 
     constructor(){
         dotenv.config();
         this.app = express();
-        this.port = process.env.PORT || '8000';
         this.middlewares();
         this.routes();
     }
@@ -26,11 +27,12 @@ export class Server{
 
     routes(){
         this.app.use('/api/users', userRouter);
+        this.app.use('/api/auditoria', auditoriaRouter);
     }
 
     listen(){
-        this.app.listen(this.port, () => {
-            console.log('Server running on port', this.port);
+        this.app.listen(ENV.PORT, () => {
+            console.log('Server running on port', ENV.PORT);
         });
     }
 }
